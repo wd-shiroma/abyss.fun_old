@@ -32,6 +32,8 @@ export const UNPIN_REQUEST = 'UNPIN_REQUEST';
 export const UNPIN_SUCCESS = 'UNPIN_SUCCESS';
 export const UNPIN_FAIL    = 'UNPIN_FAIL';
 
+export const DECODE_NARAKU = 'DECODE_NARAKU';
+
 export function reblog(status) {
   return function (dispatch, getState) {
     dispatch(reblogRequest(status));
@@ -309,5 +311,12 @@ export function unpinFail(status, error) {
     type: UNPIN_FAIL,
     status,
     error,
+  };
+};
+
+export function decodeNaraku(status) {
+  return {
+    type: DECODE_NARAKU,
+    status,
   };
 };

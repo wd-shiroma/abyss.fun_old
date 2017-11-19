@@ -15,6 +15,7 @@ import {
   unreblog,
   pin,
   unpin,
+  decodeNaraku,
 } from '../../actions/interactions';
 import {
   replyCompose,
@@ -154,6 +155,10 @@ export default class Status extends ImmutablePureComponent {
 
   handleEmbed = (status) => {
     this.props.dispatch(openModal('EMBED', { url: status.get('url') }));
+  }
+
+  handleDecodeNaraku = (status) => {
+    this.props.dispatch(decodeNaraku(status));
   }
 
   handleHotkeyMoveUp = () => {
@@ -324,6 +329,7 @@ export default class Status extends ImmutablePureComponent {
                   onReport={this.handleReport}
                   onPin={this.handlePin}
                   onEmbed={this.handleEmbed}
+                  onDecodeNaraku={this.handleDecodeNaraku}
                 />
               </div>
             </HotKeys>

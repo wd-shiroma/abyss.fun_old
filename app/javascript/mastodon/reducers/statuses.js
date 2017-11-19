@@ -9,6 +9,7 @@ import {
   UNFAVOURITE_SUCCESS,
   PIN_SUCCESS,
   UNPIN_SUCCESS,
+  DECODE_NARAKU,
 } from '../actions/interactions';
 import {
   STATUS_FETCH_SUCCESS,
@@ -100,6 +101,15 @@ const filterStatuses = (state, relationship) => {
   return state;
 };
 
+const decodeNaraku = (state, status) => {
+  if (!status || status.get('content').match(/<ruby>/)) {
+    return state;
+  }
+  const decodedStatus = ImmutableMap(status)
+    .set('content', status.get('content').replace(/:nrk([0-9a-f]+?):/g, (s, g) => `<ruby>:nrk${g}: <rt>${String.fromCodePoint(parseInt(g, 16))}</rt></ruby>`));
+  return normalizeStatus(state, decodedStatus.toJS());
+};
+
 const initialState = ImmutableMap();
 
 export default function statuses(state = initialState, action) {
@@ -142,6 +152,8 @@ export default function statuses(state = initialState, action) {
   case ACCOUNT_BLOCK_SUCCESS:
   case ACCOUNT_MUTE_SUCCESS:
     return filterStatuses(state, action.relationship);
+  case DECODE_NARAKU:
+    return decodeNaraku(state, action.status);
   default:
     return state;
   }
