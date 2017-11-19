@@ -18,6 +18,7 @@ const messages = defineMessages({
   pin: { id: 'status.pin', defaultMessage: 'Pin on profile' },
   unpin: { id: 'status.unpin', defaultMessage: 'Unpin from profile' },
   embed: { id: 'status.embed', defaultMessage: 'Embed' },
+  decode_naraku: { id: 'status.decode_naraku', defaultMessage: 'Decode Naraku-moji' },
 });
 
 @injectIntl
@@ -38,6 +39,7 @@ export default class ActionBar extends React.PureComponent {
     onPin: PropTypes.func,
     onEmbed: PropTypes.func,
     intl: PropTypes.object.isRequired,
+    onDecodeNaraku: PropTypes.func,
   };
 
   handleReplyClick = () => {
@@ -79,12 +81,18 @@ export default class ActionBar extends React.PureComponent {
     this.props.onEmbed(this.props.status);
   }
 
+  handleDecodeNaraku = () => {
+    this.props.onDecodeNaraku(this.props.status);
+  }
+
   render () {
     const { status, intl } = this.props;
 
     const publicStatus = ['public', 'unlisted'].includes(status.get('visibility'));
 
     let menu = [];
+
+    menu.push({ text: intl.formatMessage(messages.decode_naraku), action: this.handleDecodeNaraku });
 
     if (publicStatus) {
       menu.push({ text: intl.formatMessage(messages.embed), action: this.handleEmbed });

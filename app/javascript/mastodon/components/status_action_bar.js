@@ -26,6 +26,7 @@ const messages = defineMessages({
   pin: { id: 'status.pin', defaultMessage: 'Pin on profile' },
   unpin: { id: 'status.unpin', defaultMessage: 'Unpin from profile' },
   embed: { id: 'status.embed', defaultMessage: 'Embed' },
+  decode_naraku: { id: 'status.decode_naraku', defaultMessage: 'Decode Naraku-moji' },
 });
 
 @injectIntl
@@ -50,6 +51,7 @@ export default class StatusActionBar extends ImmutablePureComponent {
     onPin: PropTypes.func,
     withDismiss: PropTypes.bool,
     intl: PropTypes.object.isRequired,
+    onDecodeNaraku: PropTypes.func,
   };
 
   // Avoid checking props that are functions (and whose equality will always
@@ -102,6 +104,10 @@ export default class StatusActionBar extends ImmutablePureComponent {
     this.context.router.history.push(`/statuses/${this.props.status.get('id')}`);
   }
 
+  handleDecodeNaraku = () => {
+    this.props.onDecodeNaraku(this.props.status);
+  }
+
   handleEmbed = () => {
     this.props.onEmbed(this.props.status);
   }
@@ -127,6 +133,8 @@ export default class StatusActionBar extends ImmutablePureComponent {
     let replyTitle;
 
     menu.push({ text: intl.formatMessage(messages.open), action: this.handleOpen });
+
+    menu.push({ text: intl.formatMessage(messages.decode_naraku), action: this.handleDecodeNaraku });
 
     if (publicStatus) {
       menu.push({ text: intl.formatMessage(messages.embed), action: this.handleEmbed });

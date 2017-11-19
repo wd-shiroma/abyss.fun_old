@@ -13,6 +13,32 @@ import spring from 'react-motion/lib/spring';
 import SearchResultsContainer from './containers/search_results_container';
 import { changeComposing } from '../../actions/compose';
 
+import Button from '../../components/button';
+
+const NarakMojiHenkan = class extends React.PureComponent {
+
+  handleClick() {
+    const textarea = document.querySelector('textarea.autosuggest-textarea__textarea');
+    textarea.value = textarea.innerHTML
+      // hiragana to katakana
+      .replace(/[\u3041-\u3096]/g, s => String.fromCodePoint(s.charCodeAt(0) + 0x60))
+      // katakana to naraku-moji
+      .replace(/[\u30a1-\u30ef\u30f2\u30f3\u30fc]/g, s => '\u200b:nrk' + s.codePointAt(0).toString(16) + ':\u200b')
+      // trim duplicate zero-width-space
+      .replace(/\u200b+/g, '\u200b');
+    return false;
+  }
+
+  render() {
+    return (
+      <div>
+        <Button text='奈落文字に変換する' onClick={this.handleClick} block />
+      </div>
+    );
+  }
+
+};
+
 const messages = defineMessages({
   start: { id: 'getting_started.heading', defaultMessage: 'Getting started' },
   home_timeline: { id: 'tabs_bar.home', defaultMessage: 'Home' },
@@ -40,11 +66,11 @@ export default class Compose extends React.PureComponent {
     intl: PropTypes.object.isRequired,
   };
 
-  componentDidMount () {
+  componentDidMount() {
     this.props.dispatch(mountCompose());
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     this.props.dispatch(unmountCompose());
   }
 
@@ -56,7 +82,7 @@ export default class Compose extends React.PureComponent {
     this.props.dispatch(changeComposing(false));
   }
 
-  render () {
+  render() {
     const { multiColumn, showSearch, intl } = this.props;
 
     let header = '';
@@ -94,6 +120,7 @@ export default class Compose extends React.PureComponent {
           <div className='drawer__inner' onFocus={this.onFocus}>
             <NavigationContainer onClose={this.onBlur} />
             <ComposeFormContainer />
+            <NarakMojiHenkan />
           </div>
 
           <Motion defaultStyle={{ x: -100 }} style={{ x: spring(showSearch ? 0 : -100, { stiffness: 210, damping: 20 }) }}>
