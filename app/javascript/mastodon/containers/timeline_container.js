@@ -5,7 +5,7 @@ import configureStore from '../store/configureStore';
 import { hydrateStore } from '../actions/store';
 import { IntlProvider, addLocaleData } from 'react-intl';
 import { getLocale } from '../locales';
-import PublicTimeline from '../features/standalone/public_timeline';
+import CommunityTimeline from '../features/standalone/community_timeline';
 import HashtagTimeline from '../features/standalone/hashtag_timeline';
 import initialState from '../initial_state';
 
@@ -33,7 +33,7 @@ export default class TimelineContainer extends React.PureComponent {
     if (hashtag) {
       timeline = <HashtagTimeline hashtag={hashtag} />;
     } else {
-      timeline = <PublicTimeline />;
+      timeline = <CommunityTimeline />;
     }
 
     return (
