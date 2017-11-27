@@ -106,7 +106,8 @@ const decodeNaraku = (state, status) => {
     return state;
   }
   const decodedStatus = ImmutableMap(status)
-    .set('content', status.get('content').replace(/:nrk([0-9a-f]+?):/g, (s, g) => `<ruby>:nrk${g}: <rt>${String.fromCodePoint(parseInt(g, 16))}</rt></ruby>`));
+    .set('content', status.get('content')
+      .replace(/:nrk([0-9a-f]+?):/g, (s, g) => `<ruby>:nrk${g}: <rt>${g==='6df5'||g==='6e15'?'ｱﾋﾞｽ':String.fromCodePoint(parseInt(g, 16))}</rt></ruby>`));
   return normalizeStatus(state, decodedStatus.toJS());
 };
 

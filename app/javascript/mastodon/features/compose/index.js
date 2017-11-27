@@ -22,6 +22,8 @@ const NarakMojiHenkan = class extends React.PureComponent {
     textarea.value = textarea.innerHTML
       // hiragana to katakana
       .replace(/[\u3041-\u3096]/g, s => String.fromCodePoint(s.charCodeAt(0) + 0x60))
+      // abyss to naraku-moji
+      .replace(/奈落|深淵|アビス/ig, s => '\u200b:nrk6df5:\u200b')
       // katakana to naraku-moji
       .replace(/[\u30a1-\u30ef\u30f2\u30f3\u30fc\u6df5\u6e15\u866b\u82b1\u68ee\u96e8\u6d77]/g, s => '\u200b:nrk' + s.codePointAt(0).toString(16) + ':\u200b')
       // trim duplicate zero-width-space
