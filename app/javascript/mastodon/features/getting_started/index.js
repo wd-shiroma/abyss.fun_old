@@ -63,6 +63,10 @@ export default class GettingStarted extends ImmutablePureComponent {
         navItems.push(<ColumnLink key='2' icon='users' text={intl.formatMessage(messages.community_timeline)} to='/timelines/public/local' />);
       }
 
+      if (!multiColumn || !columns.find(item => item.get('id') === 'HASHTAG' && item.get('params').get('id') === 'メイドインアビス考察班')) {
+        navItems.push(<ColumnLink key='ex-2' icon='comments' text='考察班タイムライン' to='/timelines/tag/メイドインアビス考察班' />);
+      }
+
       if (!columns.find(item => item.get('id') === 'PUBLIC')) {
         navItems.push(<ColumnLink key='3' icon='globe' text={intl.formatMessage(messages.public_timeline)} to='/timelines/public' />);
       }

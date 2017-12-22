@@ -18,6 +18,7 @@ import {
   COMPOSE_SUGGESTION_SELECT,
   COMPOSE_SENSITIVITY_CHANGE,
   COMPOSE_SPOILERNESS_CHANGE,
+  COMPOSE_CONSIDERATIONNESS_CHANGE,
   COMPOSE_SPOILER_TEXT_CHANGE,
   COMPOSE_VISIBILITY_CHANGE,
   COMPOSE_COMPOSING_CHANGE,
@@ -70,6 +71,7 @@ function clearAll(state) {
   return state.withMutations(map => {
     map.set('text', '');
     map.set('spoiler', false);
+    map.set('consideration', false);
     map.set('spoiler_text', '');
     map.set('is_submitting', false);
     map.set('in_reply_to', null);
@@ -181,6 +183,13 @@ export default function compose(state = initialState, action) {
       if (!state.get('sensitive') && state.get('media_attachments').size >= 1) {
         map.set('sensitive', true);
       }
+    });
+  case COMPOSE_CONSIDERATIONNESS_CHANGE:
+    return state.withMutations(map => {
+      map.set('spoiler_text', '【考察】');
+      map.set('spoiler', true);
+      map.set('idempotencyKey', uuid());
+
     });
   case COMPOSE_SPOILER_TEXT_CHANGE:
     return state

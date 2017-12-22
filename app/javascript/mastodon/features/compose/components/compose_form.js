@@ -9,6 +9,7 @@ import UploadButtonContainer from '../containers/upload_button_container';
 import { defineMessages, injectIntl } from 'react-intl';
 import Collapsable from '../../../components/collapsable';
 import SpoilerButtonContainer from '../containers/spoiler_button_container';
+import ConsiderationButtonContainer from '../containers/consideration_button_container';
 import PrivacyDropdownContainer from '../containers/privacy_dropdown_container';
 import SensitiveButtonContainer from '../containers/sensitive_button_container';
 import EmojiPickerDropdown from '../containers/emoji_picker_dropdown_container';
@@ -35,6 +36,7 @@ export default class ComposeForm extends ImmutablePureComponent {
     suggestion_token: PropTypes.string,
     suggestions: ImmutablePropTypes.list,
     spoiler: PropTypes.bool,
+    consideration: PropTypes.bool,
     privacy: PropTypes.string,
     spoiler_text: PropTypes.string,
     focusDate: PropTypes.instanceOf(Date),
@@ -198,6 +200,7 @@ export default class ComposeForm extends ImmutablePureComponent {
             <PrivacyDropdownContainer />
             <SensitiveButtonContainer />
             <SpoilerButtonContainer />
+            <ConsiderationButtonContainer />
           </div>
           <div className='character-counter__wrapper'><CharacterCounter max={500} text={text} /></div>
         </div>

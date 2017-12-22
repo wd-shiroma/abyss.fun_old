@@ -33,7 +33,9 @@ export const COMPOSE_UNMOUNT = 'COMPOSE_UNMOUNT';
 
 export const COMPOSE_SENSITIVITY_CHANGE = 'COMPOSE_SENSITIVITY_CHANGE';
 export const COMPOSE_SPOILERNESS_CHANGE = 'COMPOSE_SPOILERNESS_CHANGE';
+export const COMPOSE_CONSIDERATIONNESS_CHANGE = 'COMPOSE_CONSIDERATIONNESS_CHANGE';
 export const COMPOSE_SPOILER_TEXT_CHANGE = 'COMPOSE_SPOILER_TEXT_CHANGE';
+export const COMPOSE_CONSIDERATION_TEXT_CHANGE = 'COMPOSE_CONSIDERATION_TEXT_CHANGE';
 export const COMPOSE_VISIBILITY_CHANGE  = 'COMPOSE_VISIBILITY_CHANGE';
 export const COMPOSE_LISTABILITY_CHANGE = 'COMPOSE_LISTABILITY_CHANGE';
 export const COMPOSE_COMPOSING_CHANGE = 'COMPOSE_COMPOSING_CHANGE';
@@ -340,6 +342,12 @@ export function changeComposeSensitivity() {
   };
 };
 
+export function changeComposeConsiderationness() {
+  return {
+    type: COMPOSE_CONSIDERATIONNESS_CHANGE,
+  };
+};
+
 export function changeComposeSpoilerness() {
   return {
     type: COMPOSE_SPOILERNESS_CHANGE,
@@ -349,6 +357,13 @@ export function changeComposeSpoilerness() {
 export function changeComposeSpoilerText(text) {
   return {
     type: COMPOSE_SPOILER_TEXT_CHANGE,
+    text,
+  };
+};
+
+export function changeComposeConsiderationText(text) {
+  return {
+    type: COMPOSE_CONSIDERATION_TEXT_CHANGE,
     text,
   };
 };
