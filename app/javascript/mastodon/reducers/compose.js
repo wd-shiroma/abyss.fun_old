@@ -186,7 +186,7 @@ export default function compose(state = initialState, action) {
     });
   case COMPOSE_CONSIDERATIONNESS_CHANGE:
     return state.withMutations(map => {
-      map.set('spoiler_text', '【考察】');
+      map.set('spoiler_text', '【考察】題名を入力');
       map.set('spoiler', true);
       map.set('idempotencyKey', uuid());
 
@@ -283,3 +283,5 @@ export default function compose(state = initialState, action) {
     return state;
   }
 };
+
+
