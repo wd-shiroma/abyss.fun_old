@@ -14,6 +14,7 @@ const messages = defineMessages({
   home_timeline: { id: 'tabs_bar.home', defaultMessage: 'Home' },
   notifications: { id: 'tabs_bar.notifications', defaultMessage: 'Notifications' },
   public_timeline: { id: 'navigation_bar.public_timeline', defaultMessage: 'Federated timeline' },
+  consideration_timeline: { id: 'navigation_bar.consideration_timeline', defaultMessage: 'Consideration timeline' },
   navigation_subheading: { id: 'column_subheading.navigation', defaultMessage: 'Navigation' },
   settings_subheading: { id: 'column_subheading.settings', defaultMessage: 'Settings' },
   community_timeline: { id: 'navigation_bar.community_timeline', defaultMessage: 'Local timeline' },
@@ -63,16 +64,13 @@ export default class GettingStarted extends ImmutablePureComponent {
         navItems.push(<ColumnLink key='2' icon='users' text={intl.formatMessage(messages.community_timeline)} to='/timelines/public/local' />);
       }
 
-      if (!multiColumn || !columns.find(item => item.get('id') === 'HASHTAG' && item.get('params').get('id') === 'メイドインアビス考察班')) {
+      if (!columns.find(item => item.get('id') === 'HASHTAG' && item.get('params').get('id') === 'メイドインアビス考察班')) {
         navItems.push(<ColumnLink key='ex-2' icon='comments' text='考察班タイムライン' to='/timelines/tag/メイドインアビス考察班' />);
-      }
-
-      if (!columns.find(item => item.get('id') === 'PUBLIC')) {
-        navItems.push(<ColumnLink key='3' icon='globe' text={intl.formatMessage(messages.public_timeline)} to='/timelines/public' />);
       }
     }
 
     navItems = navItems.concat([
+      <ColumnLink key='3' icon='globe' text={intl.formatMessage(messages.public_timeline)} to='/timelines/public' />,
       <ColumnLink key='4' icon='star' text={intl.formatMessage(messages.favourites)} to='/favourites' />,
       <ColumnLink key='5' icon='thumb-tack' text={intl.formatMessage(messages.pins)} to='/pinned' />,
       <ColumnLink key='9' icon='bars' text={intl.formatMessage(messages.lists)} to='/lists' />,
