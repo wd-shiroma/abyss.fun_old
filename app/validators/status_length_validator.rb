@@ -2,6 +2,7 @@
 
 class StatusLengthValidator < ActiveModel::Validator
   MAX_CHARS = 500
+  NARAKU_PATTERN = %r{:nrk[0-9a-f]{4}:}
 
   def validate(status)
     return unless status.local? && !status.reblog?
@@ -26,6 +27,7 @@ class StatusLengthValidator < ActiveModel::Validator
     status.text.dup.tap do |new_text|
       new_text.gsub!(FetchLinkCardService::URL_PATTERN, 'x' * 23)
       new_text.gsub!(Account::MENTION_RE, '@\2')
+      new_text.gsub!(NARAKU_PATTERN, 'xx')
     end
   end
 end
