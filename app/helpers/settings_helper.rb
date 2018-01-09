@@ -39,6 +39,7 @@ module SettingsHelper
     'zh-CN': '简体中文',
     'zh-HK': '繁體中文（香港）',
     'zh-TW': '繁體中文（臺灣）',
+    'ja-AB': '日本語(アビス)',
   }.freeze
 
   def human_locale(locale)
