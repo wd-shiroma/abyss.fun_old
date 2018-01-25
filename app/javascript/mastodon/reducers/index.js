@@ -25,6 +25,8 @@ import custom_emojis from './custom_emojis';
 import lists from './lists';
 import listEditor from './list_editor';
 
+import announcements from './announcements';
+
 const reducers = {
   timelines,
   meta,
@@ -51,6 +53,7 @@ const reducers = {
   custom_emojis,
   lists,
   listEditor,
+  announcements,
 };
 
 export default combineReducers(reducers);

@@ -546,6 +546,19 @@
       padding-top: 10px;
     }
   }
+
+  .compose-form__custom {
+    display: flex;
+    justify-content: space-between;
+    min-width: 0;
+
+    .compose-form__custom-encode-naraku {
+      display: block;
+      width: 100%;
+      overflow: hidden;
+      padding-top: 10px;
+    }
+  }
 }
 
 .emojione {
