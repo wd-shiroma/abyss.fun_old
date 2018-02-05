@@ -2,24 +2,35 @@ import React from 'react';
 import Immutable from 'immutable';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
+import { Link } from 'react-router-dom';
 
 const announcements = Immutable.fromJS([
   {
     body: 'アビス関連情報、当インスタンスの使い方などはこちら',
     links: [
-      {
-        href: 'https://wiki.abyss.fun',
-        body: 'Ｗｉｋｉ',
-      },
+      { href: 'https://wiki.abyss.fun', body: 'Ｗｉｋｉ' },
     ],
   },
   {
     body: 'いくらでも んなぁー が聴けます',
     links: [
-      {
-        href: 'https://click.abyss.fun',
-        body: 'んなぁーボタン',
-      }
+      { href: 'https://click.abyss.fun', body: 'んなぁーボタン' }
+    ],
+  },
+  {
+    body: 'キーワードタイムライン',
+    links: [
+      { href: '/timelines/tag/mia_staff', body: 'スタッフ', link: true },
+      { href: '/timelines/tag/mia_cast', body: '声優', link: true },
+      { href: '/timelines/tag/mia_seekercamp', body: '監視基地', link: true },
+      { href: '/timelines/tag/mia_idofront', body: '前線基地', link: true },
+      { href: '/timelines/tag/mia_rikos_party', body: 'リコさん隊', link: true },
+      { href: '/timelines/tag/mia_artifacts', body: '遺物', link: true },
+      { href: '/timelines/tag/mia_ilblu', body: 'イルブル', link: true },
+      { href: '/timelines/tag/mia_creature', body: '原生生物', link: true },
+      { href: '/timelines/tag/mia_place', body: '場所', link: true },
+      { href: '/timelines/tag/mia_nether_gryph', body: '奈落文字', link: true },
+      { href: '/timelines/tag/メイドインアビス', body: '全般', link: true }
     ],
   }
 ]);
@@ -54,9 +65,13 @@ export default class Announcements extends React.PureComponent {
                   <p>{announcement.get('body')}</p>
                   <div className='links'>
                     {announcement.get('links').map((link, i) => (
-                      <a href={link.get('href')} target='_blank' key={i}>
-                        {link.get('body')}
-                      </a>
+                      link.get('link') === true
+                      ? <Link to={link.get('href')}>
+                          {link.get('body')}
+                        </Link>
+                      : <a href={link.get('href')} target='_blank' key={i}>
+                          {link.get('body')}
+                        </a>
                     ))}
                   </div>
                 </div>
