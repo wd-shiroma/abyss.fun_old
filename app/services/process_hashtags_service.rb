@@ -25,28 +25,29 @@ class ProcessHashtagsService < BaseService
   def call(status, tags = [])
     tags = Extractor.extract_hashtags(status.text) if status.local?
 
-    tags.map { |str| str.mb_chars.downcase }.uniq(&:to_s).each do |tag|
-      status.tags << Tag.where(name: tag).first_or_initialize(name: tag)
-    end
-
     is_keyword = false
 
     KEYWORDS.each do |kw|
       if status.text =~ kw[:keyword_re] || status.spoiler_text =~ kw[:keyword_re] then
         is_keyword = true
         if kw[:keyword_tag] then
-          status.tags << Tag.where(name: kw[:keyword_tag]).first_or_initialize(name: kw[:keyword_tag])
+          tags << kw[:keyword_tag]
         end
       end
     end
 
     if is_keyword then
-      status.tags << Tag.where(name: DEFAULT_TAG).first_or_initialize(name: DEFAULT_TAG)
+      tags << DEFAULT_TAG
     end
 
     if status.spoiler_text =~ CONSIDERATION_RE then
-      status.tags << Tag.where(name: CONSIDERATION_TAG).first_or_initialize(name: CONSIDERATION_TAG)
+      tags << CONSIDERATION_TAG
     end
+
+    tags.map { |str| str.mb_chars.downcase }.uniq(&:to_s).each do |tag|
+      status.tags << Tag.where(name: tag).first_or_initialize(name: tag)
+    end
+
     status.update(sensitive: true) if tags.include?('nsfw')
   end
 end
