@@ -44,6 +44,10 @@ class ProcessHashtagsService < BaseService
       tags << CONSIDERATION_TAG
     end
 
+    if Rails.configuration.x.default_hashtag.present? && status.visibility == 'public' then
+      tags << Rails.configuration.x.default_hashtag
+    end
+
     tags.map { |str| str.mb_chars.downcase }.uniq(&:to_s).each do |tag|
       status.tags << Tag.where(name: tag).first_or_initialize(name: tag)
     end
