@@ -28,7 +28,7 @@ class ProcessHashtagsService < BaseService
     is_keyword = false
 
     KEYWORDS.each do |kw|
-      if status.text =~ kw[:keyword_re] || status.spoiler_text =~ kw[:keyword_re] && status.local? then
+      if status.text =~ kw[:keyword_re] || status.spoiler_text =~ kw[:keyword_re] && status.local? && !status.reply? then
         is_keyword = true
         if kw[:keyword_tag] then
           tags << kw[:keyword_tag]
@@ -44,7 +44,7 @@ class ProcessHashtagsService < BaseService
       tags << CONSIDERATION_TAG
     end
 
-    if Rails.configuration.x.default_hashtag.present? && status.visibility == 'public' && status.local? then
+    if Rails.configuration.x.default_hashtag.present? && status.visibility == 'public' && status.local? && !status.reply? then
       tags << Rails.configuration.x.default_hashtag
     end
 
