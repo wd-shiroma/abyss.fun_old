@@ -27,11 +27,13 @@ class ProcessHashtagsService < BaseService
 
     is_keyword = false
 
-    KEYWORDS.each do |kw|
-      if status.text =~ kw[:keyword_re] || status.spoiler_text =~ kw[:keyword_re] && status.local? && !status.reply? then
-        is_keyword = true
-        if kw[:keyword_tag] then
-          tags << kw[:keyword_tag]
+    if status.local? && !status.reply? then
+      KEYWORDS.each do |kw|
+        if status.text =~ kw[:keyword_re] || status.spoiler_text =~ kw[:keyword_re] then
+          is_keyword = true
+          if kw[:keyword_tag] then
+            tags << kw[:keyword_tag]
+          end
         end
       end
     end
