@@ -21,18 +21,26 @@ class Api::V1::Timelines::PublicController < Api::BaseController
   end
 
   def public_statuses
-    public_timeline_statuses.paginate_by_max_id(
+    statuses = public_timeline_statuses.paginate_by_max_id(
       limit_param(DEFAULT_STATUSES_LIMIT),
       params[:max_id],
       params[:since_id]
     )
+
+    if truthy_param?(:only_media)
+      # `SELECT DISTINCT id, updated_at` is too slow, so pluck ids at first, and then select id, updated_at with ids.
+      status_ids = statuses.joins(:media_attachments).distinct(:id).pluck(:id)
+      statuses.where(id: status_ids)
+    else
+      statuses
+    end
   end
 
   def public_timeline_statuses
     if params[:local] then
       Status.as_tag_timeline(Rails.configuration.x.default_hashtag_id, current_account, false)
     else
-      Status.as_public_timeline(current_account, params[:local_default])
+      Status.as_public_timeline(current_account, truthy_param?(:local))
     end
   end
 
@@ -41,7 +49,7 @@ class Api::V1::Timelines::PublicController < Api::BaseController
   end
 
   def pagination_params(core_params)
-    params.permit(:local, :limit).merge(core_params)
+    params.permit(:local, :limit, :only_media).merge(core_params)
   end
 
   def next_path

@@ -9,14 +9,15 @@ import {
 import Column from '../../../components/column';
 import ColumnHeader from '../../../components/column_header';
 import { defineMessages, injectIntl } from 'react-intl';
+import { connectCommunityStream } from '../../../actions/streaming';
 
 const messages = defineMessages({
-  title: { id: 'standalone.community_title', defaultMessage: 'A look inside...' },
+  title: { id: 'standalone.public_title', defaultMessage: 'A look inside...' },
 });
 
 @connect()
 @injectIntl
-export default class PublicTimeline extends React.PureComponent {
+export default class CommunityTimeline extends React.PureComponent {
 
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
@@ -35,16 +36,13 @@ export default class PublicTimeline extends React.PureComponent {
     const { dispatch } = this.props;
 
     dispatch(refreshCommunityTimeline());
-
-    this.polling = setInterval(() => {
-      dispatch(refreshCommunityTimeline());
-    }, 3000);
+    this.disconnect = dispatch(connectCommunityStream());
   }
 
   componentWillUnmount () {
-    if (typeof this.polling !== 'undefined') {
-      clearInterval(this.polling);
-      this.polling = null;
+    if (this.disconnect) {
+      this.disconnect();
+      this.disconnect = null;
     }
   }
 
@@ -66,7 +64,7 @@ export default class PublicTimeline extends React.PureComponent {
         <StatusListContainer
           timelineId='community'
           loadMore={this.handleLoadMore}
-          scrollKey='standalone_community_timeline'
+          scrollKey='standalone_public_timeline'
           trackScroll={false}
         />
       </Column>
