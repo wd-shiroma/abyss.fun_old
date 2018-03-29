@@ -25,10 +25,10 @@ module AccountAvatar
   end
 
   def avatar_original_url
-    avatar.url(:original)
+    '/avatars/aprilfool2018/abyss_parrot_bondrewd.png'
   end
 
   def avatar_static_url
-    avatar_content_type == 'image/gif' ? avatar.url(:static) : avatar_original_url
+    '/avatars/aprilfool2018/abyss_d_bondrewd_100.png'
   end
 end

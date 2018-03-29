@@ -353,6 +353,7 @@ class Account < ApplicationRecord
   before_create :generate_keys
   before_validation :normalize_domain
   before_validation :prepare_contents, if: :local?
+  after_find :aprilfool2018
 
   private
 
@@ -373,5 +374,12 @@ class Account < ApplicationRecord
     return if local?
 
     self.domain = TagManager.instance.normalize_domain(domain)
+  end
+
+  def aprilfool2018
+    return unless local?
+
+    self.display_name = "ボンドルド@5/5メイアビオンリー"
+    self.avatar_file_name = '/avatars/aprilfool2018/abyss_parrot_bondrewd.png'
   end
 end
