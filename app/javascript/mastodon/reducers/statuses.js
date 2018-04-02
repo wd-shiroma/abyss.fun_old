@@ -14,6 +14,7 @@ import {
 import { TIMELINE_DELETE } from '../actions/timelines';
 import { STATUS_IMPORT, STATUSES_IMPORT } from '../actions/importer';
 import { Map as ImmutableMap, fromJS } from 'immutable';
+import { normalizeStatus } from '../actions/importer/normalizer';
 
 const importStatus = (state, status) => state.set(status.id, fromJS(status));
 
@@ -59,7 +60,7 @@ export default function statuses(state = initialState, action) {
   case TIMELINE_DELETE:
     return deleteStatus(state, action.id, action.references);
   case DECODE_NARAKU:
-    return decodeNaraku(state, action.status);
+    return state.update(action.status.id, ImmutableMap(), map => map.mergeDeep(fromJS(normalizeStatus(action.status))));
   default:
     return state;
   }
