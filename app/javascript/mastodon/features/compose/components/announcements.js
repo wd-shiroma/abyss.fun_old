@@ -20,6 +20,7 @@ const announcements = Immutable.fromJS([
   {
     body: 'キーワードタイムライン',
     links: [
+      { href: '/timelines/tag/メイドインアビス考察班', body: '考察', link: true },
       { href: '/timelines/tag/mia_staff', body: 'スタッフ', link: true },
       { href: '/timelines/tag/mia_cast', body: '声優', link: true },
       { href: '/timelines/tag/mia_seekercamp', body: '監視基地', link: true },
