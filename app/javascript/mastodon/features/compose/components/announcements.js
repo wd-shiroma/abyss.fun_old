@@ -32,6 +32,13 @@ const announcements = Immutable.fromJS([
       { href: '/timelines/tag/mia_nether_gryph', body: '奈落文字', link: true },
       { href: '/timelines/tag/メイドインアビス', body: '全般', link: true }
     ],
+  },
+  {
+    body: 'おすすめタイムライン',
+    links: [
+      { href: '/timelines/tag/abyss_fun', body: 'Abyss.fun旧ローカル', link: true },
+      { href: '/timelines/tag/theboss_tech', body: 'theboss.tech(雑談)', link: true },
+    ],
   }
 ]);
 

@@ -17,6 +17,7 @@ const messages = defineMessages({
   notifications: { id: 'tabs_bar.notifications', defaultMessage: 'Notifications' },
   public_timeline: { id: 'navigation_bar.public_timeline', defaultMessage: 'Federated timeline' },
   consideration_timeline: { id: 'navigation_bar.consideration_timeline', defaultMessage: 'Consideration timeline' },
+  old_community_timeline: { id: 'navigation_bar.old_community_timeline', defaultMessage: 'Old local timeline' },
   navigation_subheading: { id: 'column_subheading.navigation', defaultMessage: 'Navigation' },
   settings_subheading: { id: 'column_subheading.settings', defaultMessage: 'Settings' },
   community_timeline: { id: 'navigation_bar.community_timeline', defaultMessage: 'Local timeline' },
@@ -93,8 +94,8 @@ export default class GettingStarted extends ImmutablePureComponent {
         navItems.push(<ColumnLink key='2' icon='users' text={intl.formatMessage(messages.community_timeline)} to='/timelines/public/local' />);
       }
 
-      if (!columns.find(item => item.get('id') === 'HASHTAG' && item.get('params').get('id') === 'メイドインアビス考察班')) {
-        navItems.push(<ColumnLink key='ex-2' icon='comments' text='考察班タイムライン' to='/timelines/tag/メイドインアビス考察班' />);
+      if (!columns.find(item => item.get('id') === 'HASHTAG' && item.get('params').get('id') === 'abyss_fun')) {
+        navItems.push(<ColumnLink key='ex-2' icon='comments' text='旧ローカルタイムライン' to='/timelines/tag/abyss_fun' />);
       }
     }
 

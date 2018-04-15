@@ -130,7 +130,7 @@ export function submitCompose() {
       insertIfOnline('home');
 
       if (response.data.in_reply_to_id === null && response.data.visibility === 'public') {
-        insertIfOnline('community');
+        //insertIfOnline('community');
         insertIfOnline('public');
       }
     }).catch(function (error) {
