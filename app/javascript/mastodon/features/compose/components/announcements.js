@@ -20,6 +20,7 @@ const announcements = Immutable.fromJS([
   {
     body: 'キーワードタイムライン',
     links: [
+      { href: '/timelines/tag/メイドインアビス考察班', body: '考察', link: true },
       { href: '/timelines/tag/mia_staff', body: 'スタッフ', link: true },
       { href: '/timelines/tag/mia_cast', body: '声優', link: true },
       { href: '/timelines/tag/mia_seekercamp', body: '監視基地', link: true },
@@ -31,6 +32,13 @@ const announcements = Immutable.fromJS([
       { href: '/timelines/tag/mia_place', body: '場所', link: true },
       { href: '/timelines/tag/mia_nether_gryph', body: '奈落文字', link: true },
       { href: '/timelines/tag/メイドインアビス', body: '全般', link: true }
+    ],
+  },
+  {
+    body: 'おすすめタイムライン',
+    links: [
+      { href: '/timelines/tag/abyss_fun', body: 'Abyss.fun旧ローカル', link: true },
+      { href: '/timelines/tag/theboss_tech', body: 'theboss.tech(雑談)', link: true },
     ],
   }
 ]);

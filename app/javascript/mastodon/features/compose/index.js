@@ -24,6 +24,7 @@ const messages = defineMessages({
   notifications: { id: 'tabs_bar.notifications', defaultMessage: 'Notifications' },
   public: { id: 'navigation_bar.public_timeline', defaultMessage: 'Federated timeline' },
   consideration: { id: 'navigation_bar.consideration_timeline', defaultMessage: 'Consideration timeline' },
+  old_community: { id: 'navigation_bar.old_community_timeline', defaultMessage: 'Old local timeline' },
   community: { id: 'navigation_bar.community_timeline', defaultMessage: 'Local timeline' },
   preferences: { id: 'navigation_bar.preferences', defaultMessage: 'Preferences' },
   logout: { id: 'navigation_bar.logout', defaultMessage: 'Logout' },
@@ -82,7 +83,7 @@ export default class Compose extends React.PureComponent {
             <Link to='/timelines/public/local' className='drawer__tab' title={intl.formatMessage(messages.community)} aria-label={intl.formatMessage(messages.community)}><i role='img' className='fa fa-fw fa-users' /></Link>
           )}
           {!columns.some(column => column.get('id') === 'HASHTAG') && (
-            <Link to='/timelines/tag/メイドインアビス考察班' className='drawer__tab' title={intl.formatMessage(messages.consideration)} aria-label={intl.formatMessage(messages.consideration)}><i role='img' className='fa fa-fw fa-comments' /></Link>
+            <Link to='/timelines/tag/abyss_fun' className='drawer__tab' title={intl.formatMessage(messages.old_community)} aria-label={intl.formatMessage(messages.old_community)}><i role='img' className='fa fa-fw fa-comments' /></Link>
           )}
           <a href='/settings/preferences' className='drawer__tab' title={intl.formatMessage(messages.preferences)} aria-label={intl.formatMessage(messages.preferences)}><i role='img' className='fa fa-fw fa-cog' /></a>
           <a href='/auth/sign_out' className='drawer__tab' data-method='delete' title={intl.formatMessage(messages.logout)} aria-label={intl.formatMessage(messages.logout)}><i role='img' className='fa fa-fw fa-sign-out' /></a>

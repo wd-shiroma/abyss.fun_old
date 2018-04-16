@@ -38,7 +38,7 @@ class Api::V1::Timelines::PublicController < Api::BaseController
 
   def public_timeline_statuses
     if params[:local] then
-      Status.as_tag_timeline(Rails.configuration.x.default_hashtag_id, current_account, false)
+      Status.as_tag_timeline(Tag.find_by(name: 'メイドインアビス'), current_account, false)
     else
       Status.as_public_timeline(current_account, truthy_param?(:local))
     end
