@@ -79,9 +79,9 @@ class ProcessHashtagsService < BaseService
             tags << kw[:keyword_tag]
           end
         end
-        if kw[:keyword_arr] then
+        if kw[:keyword_ma] then
           status_words.each do |wd|
-            if kw[:keyword_arr].include?(wd) then
+            if kw[:keyword_ma].include?(wd) then
               is_keyword = true
               if kw[:keyword_tag] then
                 tags << kw[:keyword_tag]
