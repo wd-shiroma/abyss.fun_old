@@ -139,4 +139,4 @@ group :production do
   gem 'redis-rails', '~> 5.0'
 end
 
-gem 'jumanpp_ruby'
+gem 'mecab'
