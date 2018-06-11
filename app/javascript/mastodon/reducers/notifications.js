@@ -12,6 +12,7 @@ import {
 } from '../actions/accounts';
 import { TIMELINE_DELETE, TIMELINE_DISCONNECT } from '../actions/timelines';
 import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
+import compareId from '../compare_id';
 
 const initialState = ImmutableMap({
   items: ImmutableList(),
@@ -44,13 +45,6 @@ const normalizeNotification = (state, notification) => {
   });
 };
 
-const newer = (m, n) => {
-  const mId = m.get('id');
-  const nId = n.get('id');
-
-  return mId.length === nId.length ? mId > nId : mId.length > nId.length;
-};
-
 const expandNormalizedNotifications = (state, notifications, next) => {
   let items = ImmutableList();
 
@@ -62,11 +56,11 @@ const expandNormalizedNotifications = (state, notifications, next) => {
     if (!items.isEmpty()) {
       mutable.update('items', list => {
         const lastIndex = 1 + list.findLastIndex(
-          item => item !== null && (newer(item, items.last()) || item.get('id') === items.last().get('id'))
+          item => item !== null && (compareId(item.get('id'), items.last().get('id')) > 0 || item.get('id') === items.last().get('id'))
         );
 
         const firstIndex = 1 + list.take(lastIndex).findLastIndex(
-          item => item !== null && newer(item, items.first())
+          item => item !== null && compareId(item.get('id'), items.first().get('id')) > 0
         );
 
         return list.take(firstIndex).concat(items, list.skip(lastIndex));
@@ -82,7 +76,7 @@ const expandNormalizedNotifications = (state, notifications, next) => {
 };
 
 const filterNotifications = (state, relationship) => {
-  return state.update('items', list => list.filterNot(item => item.get('account') === relationship.id));
+  return state.update('items', list => list.filterNot(item => item !== null && item.get('account') === relationship.id));
 };
 
 const updateTop = (state, top) => {
@@ -94,7 +88,7 @@ const updateTop = (state, top) => {
 };
 
 const deleteByStatus = (state, statusId) => {
-  return state.update('items', list => list.filterNot(item => item.get('status') === statusId));
+  return state.update('items', list => list.filterNot(item => item !== null && item.get('status') === statusId));
 };
 
 export default function notifications(state = initialState, action) {
@@ -111,7 +105,7 @@ export default function notifications(state = initialState, action) {
     return expandNormalizedNotifications(state, action.notifications, action.next);
   case ACCOUNT_BLOCK_SUCCESS:
   case ACCOUNT_MUTE_SUCCESS:
-    return filterNotifications(state, action.relationship);
+    return action.relationship.muting_notifications ? filterNotifications(state, action.relationship) : state;
   case NOTIFICATIONS_CLEAR:
     return state.set('items', ImmutableList()).set('hasMore', false);
   case TIMELINE_DELETE:

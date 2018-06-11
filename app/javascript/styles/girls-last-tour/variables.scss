@@ -7,10 +7,10 @@ $warning-red: #ff5050;      // Sunset Orange
 $gold-star: #ca8f04;        // Dark Goldenrod
 
 // Values from the classic Mastodon UI
-$classic-base-color: #2b2b2b;         // Midnight Express
-$classic-primary-color: #b5b5b5;      // Echo Blue
-$classic-secondary-color: #e5e5e5;    // Pattens Blue
-$classic-highlight-color: #9b9b9b;    // Summer Sky
+$classic-base-color: #2b2b2b !default;         // Midnight Express
+$classic-primary-color: #b5b5b5 !default;      // Echo Blue
+$classic-secondary-color: #e5e5e5 !default;    // Pattens Blue
+$classic-highlight-color: #9b9b9b !default;    // Summer Sky
 
 // Variables for defaults in UI
 $base-shadow-color: $black !default;
@@ -27,6 +27,18 @@ $ui-base-lighter-color: lighten($ui-base-color, 50%) !default; // Lighter darkes
 $ui-primary-color: $classic-primary-color !default;            // Lighter
 $ui-secondary-color: $classic-secondary-color !default;        // Lightest
 $ui-highlight-color: $classic-highlight-color !default;        // Vibrant
+
+// Variables for texts
+$primary-text-color: $white !default;
+$darker-text-color: $ui-primary-color !default;
+$dark-text-color: $ui-base-lighter-color !default;
+$secondary-text-color: $ui-secondary-color !default;
+$highlight-text-color: $ui-highlight-color !default;
+$action-button-color: $ui-base-lighter-color !default;
+// For texts on inverted backgrounds
+$inverted-text-color: $ui-base-color !default;
+$lighter-text-color: $ui-base-lighter-color !default;
+$light-text-color: $ui-primary-color !default;
 
 // Language codes that uses CJK fonts
 $cjk-langs: ja, ko, zh-CN, zh-HK, zh-TW;

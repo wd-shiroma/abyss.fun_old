@@ -30,9 +30,9 @@ const messages = defineMessages({
   logout: { id: 'navigation_bar.logout', defaultMessage: 'Logout' },
 });
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state, ownProps) => ({
   columns: state.getIn(['settings', 'columns']),
-  showSearch: state.getIn(['search', 'submitted']) && !state.getIn(['search', 'hidden']),
+  showSearch: ownProps.multiColumn ? state.getIn(['search', 'submitted']) && !state.getIn(['search', 'hidden']) : ownProps.isSearchPage,
 });
 
 @connect(mapStateToProps)
@@ -44,15 +44,24 @@ export default class Compose extends React.PureComponent {
     columns: ImmutablePropTypes.list.isRequired,
     multiColumn: PropTypes.bool,
     showSearch: PropTypes.bool,
+    isSearchPage: PropTypes.bool,
     intl: PropTypes.object.isRequired,
   };
 
-  componentDidMount() {
-    this.props.dispatch(mountCompose());
+  componentDidMount () {
+    const { isSearchPage } = this.props;
+
+    if (!isSearchPage) {
+      this.props.dispatch(mountCompose());
+    }
   }
 
-  componentWillUnmount() {
-    this.props.dispatch(unmountCompose());
+  componentWillUnmount () {
+    const { isSearchPage } = this.props;
+
+    if (!isSearchPage) {
+      this.props.dispatch(unmountCompose());
+    }
   }
 
   onFocus = () => {
@@ -63,8 +72,8 @@ export default class Compose extends React.PureComponent {
     this.props.dispatch(changeComposing(false));
   }
 
-  render() {
-    const { multiColumn, showSearch, intl } = this.props;
+  render () {
+    const { multiColumn, showSearch, isSearchPage, intl } = this.props;
 
     let header = '';
 
@@ -72,7 +81,7 @@ export default class Compose extends React.PureComponent {
       const { columns } = this.props;
       header = (
         <nav className='drawer__header'>
-          <Link to='/getting-started' className='drawer__tab' title={intl.formatMessage(messages.start)} aria-label={intl.formatMessage(messages.start)}><i role='img' className='fa fa-fw fa-asterisk' /></Link>
+          <Link to='/getting-started' className='drawer__tab' title={intl.formatMessage(messages.start)} aria-label={intl.formatMessage(messages.start)}><i role='img' className='fa fa-fw fa-bars' /></Link>
           {!columns.some(column => column.get('id') === 'HOME') && (
             <Link to='/timelines/home' className='drawer__tab' title={intl.formatMessage(messages.home_timeline)} aria-label={intl.formatMessage(messages.home_timeline)}><i role='img' className='fa fa-fw fa-home' /></Link>
           )}
@@ -95,10 +104,10 @@ export default class Compose extends React.PureComponent {
       <div className='drawer'>
         {header}
 
-        <SearchContainer />
+        {(multiColumn || isSearchPage) && <SearchContainer /> }
 
         <div className='drawer__pager'>
-          <div className='drawer__inner' onFocus={this.onFocus}>
+          {!isSearchPage && <div className='drawer__inner' onFocus={this.onFocus}>
             <NavigationContainer onClose={this.onBlur} />
             <ComposeFormContainer />
             <AnnouncementsContainer />
@@ -108,9 +117,9 @@ export default class Compose extends React.PureComponent {
                 <img alt='' draggable='false' src={elephantUIPlane} />
               </div>
             )}
-          </div>
+          </div>}
 
-          <Motion defaultStyle={{ x: -100 }} style={{ x: spring(showSearch ? 0 : -100, { stiffness: 210, damping: 20 }) }}>
+          <Motion defaultStyle={{ x: isSearchPage ? 0 : -100 }} style={{ x: spring(showSearch || isSearchPage ? 0 : -100, { stiffness: 210, damping: 20 }) }}>
             {({ x }) => (
               <div className='drawer__inner darker' style={{ transform: `translateX(${x}%)`, visibility: x === -100 ? 'hidden' : 'visible' }}>
                 <SearchResultsContainer />

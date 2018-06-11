@@ -1,4 +1,5 @@
-import { putAccounts, putStatuses } from '../../db/modifier';
+import { autoPlayGif } from '../../initial_state';
+import { putAccounts, putStatuses } from '../../storage/modifier';
 import { normalizeAccount, normalizeStatus } from './normalizer';
 
 export const ACCOUNT_IMPORT = 'ACCOUNT_IMPORT';
@@ -44,7 +45,7 @@ export function importFetchedAccounts(accounts) {
   }
 
   accounts.forEach(processAccount);
-  putAccounts(normalAccounts);
+  putAccounts(normalAccounts, !autoPlayGif);
 
   return importAccounts(normalAccounts);
 }

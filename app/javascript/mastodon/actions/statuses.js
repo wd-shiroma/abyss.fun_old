@@ -1,6 +1,6 @@
 import api from '../api';
-import asyncDB from '../db/async';
-import { evictStatus } from '../db/modifier';
+import openDB from '../storage/db';
+import { evictStatus } from '../storage/modifier';
 
 import { deleteFromTimelines } from './timelines';
 import { fetchStatusCard } from './cards';
@@ -28,6 +28,8 @@ export const STATUS_UNMUTE_FAIL    = 'STATUS_UNMUTE_FAIL';
 
 export const STATUS_REVEAL = 'STATUS_REVEAL';
 export const STATUS_HIDE   = 'STATUS_HIDE';
+
+export const REDRAFT = 'REDRAFT';
 
 export function fetchStatusRequest(id, skipLoading) {
   return {
@@ -92,12 +94,17 @@ export function fetchStatus(id) {
 
     dispatch(fetchStatusRequest(id, skipLoading));
 
-    asyncDB.then(db => {
+    openDB().then(db => {
       const transaction = db.transaction(['accounts', 'statuses'], 'read');
       const accountIndex = transaction.objectStore('accounts').index('id');
       const index = transaction.objectStore('statuses').index('id');
 
-      return getFromDB(dispatch, getState, accountIndex, index, id);
+      return getFromDB(dispatch, getState, accountIndex, index, id).then(() => {
+        db.close();
+      }, error => {
+        db.close();
+        throw error;
+      });
     }).then(() => {
       dispatch(fetchStatusSuccess(skipLoading));
     }, () => api(getState).get(`/api/v1/statuses/${id}`).then(response => {
@@ -126,14 +133,27 @@ export function fetchStatusFail(id, error, skipLoading) {
   };
 };
 
-export function deleteStatus(id) {
+export function redraft(status) {
+  return {
+    type: REDRAFT,
+    status,
+  };
+};
+
+export function deleteStatus(id, withRedraft = false) {
   return (dispatch, getState) => {
+    const status = getState().getIn(['statuses', id]);
+
     dispatch(deleteStatusRequest(id));
 
     api(getState).delete(`/api/v1/statuses/${id}`).then(() => {
       evictStatus(id);
       dispatch(deleteStatusSuccess(id));
       dispatch(deleteFromTimelines(id));
+
+      if (withRedraft) {
+        dispatch(redraft(status));
+      }
     }).catch(error => {
       dispatch(deleteStatusFail(id, error));
     });

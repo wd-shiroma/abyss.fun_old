@@ -1,3 +1,5 @@
 default: styles/application.scss
 naraku: styles/naraku.scss
 girls-last-tour: styles/girls-last-tour.scss
+contrast: styles/contrast.scss
+mastodon-light: styles/mastodon-light.scss
