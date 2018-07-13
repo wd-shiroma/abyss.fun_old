@@ -426,7 +426,7 @@ ar:
     following: 'مرحى ! أنت الآن تتبع :'
     post_follow:
       close: أو يمكنك إغلاق هذه النافذة.
-      return: العودة إلى الملف الشخصي للمستخدم
+      return: عرض الملف الشخصي للمستخدم
       web: واصل إلى الويب
     title: إتباع %{acct}
   datetime:
@@ -448,6 +448,7 @@ ar:
     confirm_password: قم بإدخال كلمتك السرية الحالية للتحقق من هويتك
     proceed: حذف حساب
     success_msg: تم حذف حسابك بنجاح
+    warning_title: توافر المحتوى المنشور و المبعثَر
   errors:
     '403': ليس لك الصلاحيات الكافية لعرض هذه الصفحة.
     '404': إنّ الصفحة التي تبحث عنها لا وجود لها أصلا.
@@ -455,9 +456,11 @@ ar:
     '422':
       content: فشل التحقق الآمن. ربما منعتَ كعكات الكوكيز ؟
       title: فشِل التحقق الآمن
+    '429': طلبات كثيرة جدا
     '500':
       content: نحن متأسفون، لقد حدث خطأ ما مِن جانبنا.
       title: هذه الصفحة خاطئة
+    noscript_html: يرجى تفعيل الجافا سكريبت لاستخدام تطبيق الويب لماستدون، أو عِوض ذلك قوموا بتجريب إحدى <a href="https://github.com/tootsuite/documentation/blob/master/Using-Mastodon/Apps.md">التطبيقات الأصلية</a> الدّاعمة لماستدون على منصّتكم.
   exports:
     archive_takeout:
       date: التاريخ
@@ -471,11 +474,27 @@ ar:
     follows: أنت تتبع
     mutes: قُمتَ بكتم
     storage: ذاكرة التخزين
+  filters:
+    contexts:
+      home: الخيط الزمني الرئيسي
+      notifications: الإخطارات
+      public: الخيوط الزمنية العامة
+      thread: المحادثات
+    edit:
+      title: تعديل عامل التصفية
+    index:
+      delete: إزالة
+      title: عوامل التصفية
+    new:
+      title: إضافة عامل تصفية جديد
   followers:
     domain: النطاق
     followers_count: عدد المتابِعين
     lock_link: قم بتجميد حسابك
     purge: تنحية من بين متابعيك
+    success:
+      one: جارية عملية حظر المتابِعين بسلاسة من نطاق آخر ...
+      other: جارية عملية حظر المتابِعين بسلاسة من %{count} نطاقات أخرى ...
     unlocked_warning_title: إنّ حسابك غير مقفل
   generic:
     changes_saved_msg: تم حفظ التعديلات بنجاح !
@@ -504,6 +523,7 @@ ar:
       '86400': يوم واحد
     expires_in_prompt: أبدا
     generate: توليد
+    invited_by: 'تمت دعوتك من طرف :'
     max_uses:
       one: إستعمال واحد
       other: "%{count} استخدامات"
@@ -526,6 +546,7 @@ ar:
     acct: username@domain للحساب الجديد
     currently_redirecting: 'تم تحويل رابط ملفك الشخصي إلى :'
     proceed: حفظ
+    updated_msg: تم تحديث إعدادات ترحيل حسابك بنجاح !
   moderation:
     title: الإشراف
   notification_mailer:
@@ -543,6 +564,7 @@ ar:
     favourite:
       body: 'أُعجب %{name} بمنشورك :'
       subject: أُعجِب %{name} بمنشورك
+      title: مفضّلة جديدة
     follow:
       body: "%{name} من متتبعيك الآن !"
       subject: "%{name} من متتبعيك الآن"
@@ -556,6 +578,7 @@ ar:
       action: الرد
       body: 'أشار إليك %{name} في :'
       subject: لقد قام %{name} بذِكرك
+      title: إشارة جديدة
     reblog:
       body: 'قام %{name} بترقية منشورك :'
       subject: قام %{name} بترقية منشورك
@@ -585,11 +608,13 @@ ar:
   remote_follow:
     acct: قم بإدخال عنوان حسابك username@domain الذي من خلاله تود المتابعة
     missing_resource: تعذر العثور على رابط التحويل المطلوب الخاص بحسابك
+    no_account_html: أليس عندك حساب بعدُ ؟ يُمْكنك <a href='%{sign_up_path}' target='_blank'>التسجيل مِن هنا</a>
     proceed: أكمل المتابعة
     prompt: 'إنك  بصدد متابعة :'
   remote_unfollow:
     error: خطأ
-    title: ''
+    title: العنوان
+    unfollowed: غير متابَع
   sessions:
     activity: آخر نشاط
     browser: المتصفح
@@ -603,6 +628,7 @@ ar:
       generic: متصفح مجهول
       ie: إنترنت إكسبلورر
       micro_messenger: مايكرو ميسنجر
+      nokia: متصفح  Nokia S40 Ovi
       opera: أوبرا
       otter: أوتر
       phantom_js: فانتوم جي آس
@@ -647,17 +673,22 @@ ar:
     your_apps: تطبيقاتك
   statuses:
     attached:
+      description: 'مُرفَق : %{attached}'
       image:
-        one: ''
-        other: ''
+        one: "%{count} صورة"
+        other: "%{count} صور"
       video:
-        one: ''
-        other: ''
-    content_warning: ''
+        one: "%{count} فيديو"
+        other: "%{count} فيديوهات"
+    content_warning: 'تحذير عن المحتوى : %{warning}'
+    disallowed_hashtags:
+      one: 'يحتوي على وسم ممنوع : %{tags}'
+      other: 'يحتوي على وسوم ممنوعة : %{tags}'
+    language_detection: اكتشاف اللغة تلقائيا
     open_in_web: إفتح في الويب
     over_character_limit: تم تجاوز حد الـ %{max} حرف المسموح بها
     pin_errors:
-      limit: ''
+      limit: لقد بلغت الحد الأقصى للتبويقات المدبسة
       ownership: لا يمكن تدبيس تبويق نشره شخص آخر
       private: لا يمكن تثبيت تبويق لم يُنشر للعامة
       reblog: لا يمكن تثبيت ترقية
@@ -678,7 +709,9 @@ ar:
   terms:
     title: شروط الخدمة وسياسة الخصوصية على %{instance}
   themes:
+    contrast: تباين عالٍ
     default: ماستدون
+    mastodon-light: ماستدون (فاتح)
   time:
     formats:
       default: "%b %d, %Y, %H:%M"
@@ -702,15 +735,17 @@ ar:
       subject: نسخة بيانات حسابك جاهزة للتنزيل
       title: المغادرة بأرشيف الحساب
     welcome:
-      edit_profile_action: ''
-      explanation: ''
-      full_handle: ''
-      review_preferences_action: ''
-      subject: ''
+      edit_profile_action: تهيئة الملف الشخصي
+      explanation: ها هي بعض النصائح قبل بداية الإستخدام
+      final_action: اشرَع في النشر
+      full_handle: عنوانك الكامل
+      review_preferences_action: تعديل التفضيلات
+      subject: أهلًا بك على ماستدون
       tips: نصائح
       title: أهلاً بك، %{name} !
   users:
     invalid_email: عنوان البريد الإلكتروني غير صالح
     invalid_otp_token: رمز المصادقة بخطوتين غير صالح
+    otp_lost_help_html: إن فقدتَهُما ، يمكنك الإتصال بـ %{email}
     seamless_external_login: لقد قمت بتسجيل الدخول عبر خدمة خارجية، إنّ إعدادات الكلمة السرية و البريد الإلكتروني غير متوفرة.
     signed_in_as: 'تم تسجيل دخولك بصفة :'
