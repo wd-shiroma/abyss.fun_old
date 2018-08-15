@@ -36,7 +36,7 @@ class ProcessHashtagsService < BaseService
     }, {
         keyword_tag: "mia_ilblu",
         keyword_re: %r{干渉器|先触れの獣|三賢},
-        keyword_ma: [ 'イルブル', 'ショウロウ', 'ドブーグ', 'ハディ', 'ハニースク', 'ファプタ', 'ブエコ', 'ブエロエルコ', 'ベラフ', 'マアア', 'マジカジャ', 'ワズキャン' ]
+        keyword_ma: [ 'イルブル', 'ショウロウ', 'ドブーグ', 'ハディ', 'ハニースク', 'ファプタ', 'ブエコ', 'ブエロエルコ', 'ベラフ', 'マアア', 'マジカジャ', 'ワズキャン', 'イルミューイ', 'エンベリーツ', 'オオガスミ', 'ガンジャ', 'クベキャサス', '睾丸焼き', 'シムレド', 'シュレカカ', 'ジュロイモー', 'ムーギィ', 'メポポホン', 'ヴエコ', 'ヴエロエルコ' ]
     }, {
         keyword_tag: "mia_creature",
         keyword_re: %r{[慣成な]れ[は果]て},
@@ -68,7 +68,6 @@ class ProcessHashtagsService < BaseService
     if status.local? && !status.reply? then
       tagger = MeCab::Tagger.new
       node = tagger.parseToNode(status.text)
-      p status.text      
 
       status_words = []
       while node do
