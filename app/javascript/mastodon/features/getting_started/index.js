@@ -93,7 +93,7 @@ export default class GettingStarted extends ImmutablePureComponent {
         <ColumnSubheading key={i++} text={intl.formatMessage(messages.personal)} />
       );
 
-      height += 34*2 + 48*2;
+      height += 34*2 + 48*3;
     }
 
     navItems.push(
