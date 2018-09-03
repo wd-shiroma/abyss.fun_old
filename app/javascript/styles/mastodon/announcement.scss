@@ -44,7 +44,7 @@
   li {
     display: flex;
     padding: 10px;
-    color: $primary-text-color;
+    color: $black;
     background: darken($white, 10%);
     border-radius: 4px;
     margin-top: 10px;
@@ -71,11 +71,11 @@
 
       a {
         display: inline-block;
-        color: $primary-text-color;
+        color: $black;
         background: darken($white, 5%);
         text-decoration: none;
         padding: 1px 10px 0;
-        border: solid 1px $primary-text-color;
+        border: solid 1px $black;
         font-size: 10px;
         font-weight: 600;
         border-radius: 4px;
