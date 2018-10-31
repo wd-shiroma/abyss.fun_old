@@ -2,7 +2,7 @@
 
 class ActivityPub::Activity::Create < ActivityPub::Activity
   SUPPORTED_TYPES = %w(Note).freeze
-  CONVERTED_TYPES = %w(Image Video Article).freeze
+  CONVERTED_TYPES = %w(Image Video Article Page).freeze
 
   def perform
     return if delete_arrived_first?(object_uri) || unsupported_object_type? || invalid_origin?(@object['id'])
@@ -10,7 +10,12 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
     RedisLock.acquire(lock_options) do |lock|
       if lock.acquired?
         @status = find_existing_status
-        process_status if @status.nil?
+
+        if @status.nil?
+          process_status
+        elsif @options[:delivered_to_account_id].present?
+          postprocess_audience_and_deliver
+        end
       else
         raise Mastodon::RaceConditionError
       end
@@ -28,6 +33,7 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
 
     process_status_params
     process_tags
+    process_audience
 
     ApplicationRecord.transaction do
       @status = Status.create!(@params)
@@ -66,6 +72,51 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
     end
   end
 
+  def process_audience
+    (as_array(@object['to']) + as_array(@object['cc'])).uniq.each do |audience|
+      next if audience == ActivityPub::TagManager::COLLECTIONS[:public]
+
+      # Unlike with tags, there is no point in resolving accounts we don't already
+      # know here, because silent mentions would only be used for local access
+      # control anyway
+      account = account_from_uri(audience)
+
+      next if account.nil? || @mentions.any? { |mention| mention.account_id == account.id }
+
+      @mentions << Mention.new(account: account, silent: true)
+
+      # If there is at least one silent mention, then the status can be considered
+      # as a limited-audience status, and not strictly a direct message, but only
+      # if we considered a direct message in the first place
+      next unless @params[:visibility] == :direct
+
+      @params[:visibility] = :limited
+    end
+
+    # If the payload was delivered to a specific inbox, the inbox owner must have
+    # access to it, unless they already have access to it anyway
+    return if @options[:delivered_to_account_id].nil? || @mentions.any? { |mention| mention.account_id == @options[:delivered_to_account_id] }
+
+    @mentions << Mention.new(account_id: @options[:delivered_to_account_id], silent: true)
+
+    return unless @params[:visibility] == :direct
+
+    @params[:visibility] = :limited
+  end
+
+  def postprocess_audience_and_deliver
+    return if @status.mentions.find_by(account_id: @options[:delivered_to_account_id])
+
+    delivered_to_account = Account.find(@options[:delivered_to_account_id])
+
+    @status.mentions.create(account: delivered_to_account, silent: true)
+    @status.update(visibility: :limited) if @status.direct_visibility?
+
+    return unless delivered_to_account.following?(@account)
+
+    FeedInsertWorker.perform_async(@status.id, delivered_to_account.id, :home)
+  end
+
   def attach_tags(status)
     @tags.each do |tag|
       status.tags << tag
@@ -96,7 +147,7 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
     return if tag['name'].blank?
 
     hashtag = tag['name'].gsub(/\A#/, '').mb_chars.downcase
-    hashtag = Tag.where(name: hashtag).first_or_create(name: hashtag)
+    hashtag = Tag.where(name: hashtag).first_or_create!(name: hashtag)
 
     return if @tags.include?(hashtag)
 
@@ -113,7 +164,7 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
 
     return if account.nil?
 
-    @mentions << Mention.new(account: account)
+    @mentions << Mention.new(account: account, silent: false)
   end
 
   def process_emoji(tag)

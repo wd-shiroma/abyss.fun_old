@@ -14,7 +14,6 @@ import relationships from './relationships';
 import settings from './settings';
 import push_notifications from './push_notifications';
 import status_lists from './status_lists';
-import cards from './cards';
 import mutes from './mutes';
 import reports from './reports';
 import contexts from './contexts';
@@ -28,6 +27,7 @@ import lists from './lists';
 import listEditor from './list_editor';
 import filters from './filters';
 import conversations from './conversations';
+import suggestions from './suggestions';
 
 import announcements from './announcements';
 
@@ -47,7 +47,6 @@ const reducers = {
   relationships,
   settings,
   push_notifications,
-  cards,
   mutes,
   reports,
   contexts,
@@ -62,6 +61,7 @@ const reducers = {
   announcements,
   filters,
   conversations,
+  suggestions,
 };
 
 export default combineReducers(reducers);

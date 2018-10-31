@@ -873,6 +873,14 @@
   {
     "descriptors": [
       {
+        "defaultMessage": "Dismiss suggestion",
+        "id": "suggestions.dismiss"
+      },
+      {
+        "defaultMessage": "You might be interested in…",
+        "id": "suggestions.header"
+      },
+      {
         "defaultMessage": "People",
         "id": "search_results.accounts"
       },

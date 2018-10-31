@@ -314,6 +314,8 @@
   "status.show_more_all": "Rozwiń wszystkie",
   "status.unmute_conversation": "Cofnij wyciszenie konwersacji",
   "status.unpin": "Odepnij z profilu",
+  "suggestions.dismiss": "Dismiss suggestion",
+  "suggestions.header": "You might be interested in…",
   "tabs_bar.federated_timeline": "Globalne",
   "tabs_bar.home": "Strona główna",
   "tabs_bar.local_timeline": "Lokalne",
